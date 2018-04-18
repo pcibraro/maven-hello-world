@@ -33,17 +33,18 @@ pipeline {
             steps {
                 node ('linux') {
                         script {
-                            // define the secrets and the env variables
                             def secrets = [
                                 [$class: 'VaultSecret', path: 'secret/hello', secretValues: [
-                                [$class: 'VaultSecretValue', envVar: 'MYVALUE', vaultKey: 'foo']]
-                            ]]
+                                    [$class: 'VaultSecretValue', envVar: 'testing', vaultKey: 'foo'],
+                                    [$class: 'VaultSecretValue', envVar: 'testing_again', vaultKey: 'foo']]],
+                                [$class: 'VaultSecret', path: 'secret/hello', secretValues: [
+                                    [$class: 'VaultSecretValue', envVar: 'another_test', vaultKey: 'foo']]]
+                            ]
                             
-                            println "secrets"
-                            println secrets
-
-                            wrap([$class: 'VaultBuildWrapper', configuration: configuration, vaultSecrets: secrets]) {
-                                sh 'echo $MYVALUE'
+                            wrap([$class: 'VaultBuildWrapper', vaultSecrets: secrets]) {
+                                sh 'echo $testing'
+                                sh 'echo $testing_again'
+                                sh 'echo $another_test'
                             }
                         }
                     }
