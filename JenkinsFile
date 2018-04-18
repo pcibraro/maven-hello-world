@@ -11,12 +11,6 @@ pipeline {
                
                     
                script {
-                   // define the secrets and the env variables
-                    def secrets = [
-                        [$class: 'VaultSecret', path: 'secret/hello', secretValues: [
-                        [$class: 'VaultSecretValue', envVar: 'MYVALUE', vaultKey: 'foo']]
-                    ]]
-
                     def server = Artifactory.server 'local'
     
                     def maven = Artifactory.newMavenBuild()
@@ -30,9 +24,25 @@ pipeline {
                     def buildInfo = maven.run pom: './my-app/pom.xml', goals: 'clean package'
                }
 
-               sh "echo $MYVALUE"
+                
+               
 
             }
+        }
+    }
+    stage('Vault') {
+        steps {
+            node {
+                    // define the secrets and the env variables
+                    def secrets = [
+                        [$class: 'VaultSecret', path: 'secret/hello', secretValues: [
+                        [$class: 'VaultSecretValue', envVar: 'MYVALUE', vaultKey: 'foo']]
+                    ]]
+                    
+                    wrap([$class: 'VaultBuildWrapper', configuration: configuration, vaultSecrets: secrets]) {
+                        sh 'echo $MYVALUE'
+                    }
+                }
         }
     }
 }
