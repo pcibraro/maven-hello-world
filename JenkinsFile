@@ -37,6 +37,10 @@ pipeline {
                                 [$class: 'VaultSecret', path: 'secret/pablo', secretValues: [
                                     [$class: 'VaultSecretValue', envVar: 'testing', vaultKey: 'mykey']]]
                             ]
+
+                            def configuration = [$class: 'VaultConfiguration',
+                                vaultUrl: 'http://http://127.0.0.1:8200',
+                                vaultCredentialId: 'vault-root']
                             
                             wrap([$class: 'VaultBuildWrapper', vaultSecrets: secrets]) {
                                 sh 'echo $testing'
