@@ -39,6 +39,9 @@ pipeline {
                                 [$class: 'VaultSecretValue', envVar: 'MYVALUE', vaultKey: 'foo']]
                             ]]
                             
+                            println "secrets"
+                            println secrets
+
                             wrap([$class: 'VaultBuildWrapper', configuration: configuration, vaultSecrets: secrets]) {
                                 sh 'echo $MYVALUE'
                             }
