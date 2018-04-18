@@ -31,7 +31,7 @@ pipeline {
         }
         stage('Vault') {
             steps {
-                node {
+                node ('linux') {
                         // define the secrets and the env variables
                         def secrets = [
                             [$class: 'VaultSecret', path: 'secret/hello', secretValues: [
