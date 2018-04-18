@@ -32,14 +32,16 @@ pipeline {
         stage('Vault') {
             steps {
                 node ('linux') {
-                        // define the secrets and the env variables
-                        def secrets = [
-                            [$class: 'VaultSecret', path: 'secret/hello', secretValues: [
-                            [$class: 'VaultSecretValue', envVar: 'MYVALUE', vaultKey: 'foo']]
-                        ]]
-                        
-                        wrap([$class: 'VaultBuildWrapper', configuration: configuration, vaultSecrets: secrets]) {
-                            sh 'echo $MYVALUE'
+                        script {
+                            // define the secrets and the env variables
+                            def secrets = [
+                                [$class: 'VaultSecret', path: 'secret/hello', secretValues: [
+                                [$class: 'VaultSecretValue', envVar: 'MYVALUE', vaultKey: 'foo']]
+                            ]]
+                            
+                            wrap([$class: 'VaultBuildWrapper', configuration: configuration, vaultSecrets: secrets]) {
+                                sh 'echo $MYVALUE'
+                            }
                         }
                     }
             }
