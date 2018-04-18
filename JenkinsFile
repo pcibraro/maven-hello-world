@@ -24,10 +24,10 @@ pipeline {
                      // define the secrets and the env variables
                     def secrets = [
                         [$class: 'VaultSecret', path: 'secret/hello', secretValues: [
-                            [$class: 'VaultSecretValue', envVar: 'myvalue', vaultKey: 'foo']]
+                            [$class: 'VaultSecretValue', envVar: 'MYVALUE', vaultKey: 'foo']]
                     ]]
                     
-                    println "My value is $env.myvalue"
+                    println "My value is $MYVALUE"
                }
 
             }
