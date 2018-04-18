@@ -34,8 +34,8 @@ pipeline {
                 node ('linux') {
                         script {
                             def secrets = [
-                                [$class: 'VaultSecret', path: 'secret/hello', secretValues: [
-                                    [$class: 'VaultSecretValue', envVar: 'testing', vaultKey: 'foo']]]
+                                [$class: 'VaultSecret', path: 'secret/pablo', secretValues: [
+                                    [$class: 'VaultSecretValue', envVar: 'testing', vaultKey: 'mykey']]]
                             ]
                             
                             wrap([$class: 'VaultBuildWrapper', vaultSecrets: secrets]) {
