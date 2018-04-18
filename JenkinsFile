@@ -42,7 +42,7 @@ pipeline {
                                 vaultUrl: 'http://http://127.0.0.1:8200',
                                 vaultCredentialId: 'vault-root']
                             
-                            wrap([$class: 'VaultBuildWrapper', vaultSecrets: secrets]) {
+                            wrap([$class: 'VaultBuildWrapper', configuration: configuration, vaultSecrets: secrets]) {
                                 sh 'echo $testing'
                             }
                         }
