@@ -8,6 +8,12 @@ pipeline {
         stage('Build') { 
             steps { 
                echo 'This is a minimal pipeline.' 
+               // define the secrets and the env variables
+                    def secrets = [
+                        [$class: 'VaultSecret', path: 'secret/hello', secretValues: [
+                            [$class: 'VaultSecretValue', envVar: 'MYVALUE', vaultKey: 'foo']]
+                    ]]
+                    
                script {
                    def server = Artifactory.server 'local'
     
@@ -21,11 +27,7 @@ pipeline {
        
                     def buildInfo = maven.run pom: './my-app/pom.xml', goals: 'clean package'
 
-                     // define the secrets and the env variables
-                    def secrets = [
-                        [$class: 'VaultSecret', path: 'secret/hello', secretValues: [
-                            [$class: 'VaultSecretValue', envVar: 'MYVALUE', vaultKey: 'foo']]
-                    ]]
+                    
                     
                     println "My value is $MYVALUE"
                }
