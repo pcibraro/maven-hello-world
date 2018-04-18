@@ -39,7 +39,7 @@ pipeline {
                             ]
 
                             def configuration = [$class: 'VaultConfiguration',
-                                vaultUrl: 'http://http://127.0.0.1:8200',
+                                vaultUrl: 'http://127.0.0.1:8200',
                                 vaultCredentialId: 'vault']
                             
                             wrap([$class: 'VaultBuildWrapper', configuration: configuration, vaultSecrets: secrets]) {
