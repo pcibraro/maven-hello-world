@@ -27,7 +27,7 @@ pipeline {
                             [$class: 'VaultSecretValue', envVar: 'myvalue', vaultKey: 'foo']]
                     ]
                     
-                    println "My value is $env.myvalue"
+                    //println "My value is $env.myvalue"
                }
 
             }
