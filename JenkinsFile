@@ -20,20 +20,16 @@ pipeline {
                     maven.deployer.deployArtifacts = true
        
                     def buildInfo = maven.run pom: './my-app/pom.xml', goals: 'clean package'
-               }
 
-               node {
-                   // define the secrets and the env variables
+                     // define the secrets and the env variables
                     def secrets = [
                         [$class: 'VaultSecret', path: 'secret/hello', secretValues: [
                             [$class: 'VaultSecretValue', envVar: 'myvalue', vaultKey: 'foo']]
                     ]
-
-                    script {
-                        println "My value is $env.myvalue"
-                    }
-
+                    
+                    println "My value is $env.myvalue"
                }
+
             }
         }
     }
