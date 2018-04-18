@@ -34,7 +34,7 @@ pipeline {
                 node ('linux') {
                         script {
                             def secrets = [
-                                [$class: 'VaultSecret', path: 'v1/secret/pablo/level', secretValues: [
+                                [$class: 'VaultSecret', path: '/v1/secret/pablo/level', secretValues: [
                                     [$class: 'VaultSecretValue', envVar: 'testing', vaultKey: 'mykey']]]
                             ]
 
