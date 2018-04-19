@@ -7,7 +7,7 @@ pipeline {
     stages { 
         stage('Call API') {
             steps {
-                
+                @Library("mulesoft") import org.jmfamily
 
                 script {
                     //def response = httpRequest url:"http://ip.jsontest.com/"
@@ -16,7 +16,7 @@ pipeline {
 
                     //println responseContent
 
-                    @Library("mulesoft") import org.jmfamily
+                    
                     def mule = new Mulesoft(this)
 
                     var response = mule.CallApi()
