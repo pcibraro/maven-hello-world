@@ -1,76 +1,28 @@
-pipeline { 
-    agent any  
+#!groovy
+@Library('mulesoft@1.10') _ 
+
+import org.jmfamily.*
+
+pipeline {
+  agent any  
     tools {
         maven 'Maven'
         jdk 'JDK 1.8'
     }
-    stages { 
-        stage('Call API') {
+    stages {
+        stage ('Start') {
             steps {
-                @Library("mulesoft") import org.jmfamily
-
                 script {
-                    //def response = httpRequest url:"http://ip.jsontest.com/"
-
-                    //def responseContent = readJSON text: response.content
-
-                    //println responseContent
-
+                    println pwd()
+                    // send build started notifications
+                    callapi.callme 'foo'
                     
-                    def mule = new Mulesoft(this)
-
-                    var response = mule.CallApi()
-
-                    println response
-
-
+                    callapi.download Artifactory
+                    
+                    callapi.compile Artifactory
+                    
                 }
             }
         }
-        /*stage('Build') { 
-            steps { 
-               echo 'This is a minimal pipeline.' 
-               
-                    
-               script {
-                    def server = Artifactory.server 'local'
-    
-                    def maven = Artifactory.newMavenBuild()
-    
-                    maven.resolver server: server, releaseRepo: 'jcenter', snapshotRepo: 'jcenter'
-    
-                    maven.deployer server: server, releaseRepo: 'samples', snapshotRepo: 'samples'
-    
-                    maven.deployer.deployArtifacts = true
-       
-                    def buildInfo = maven.run pom: './my-app/pom.xml', goals: 'clean package'
-               }
-
-                
-               
-
-            }
-        }*/
-        /*stage('Vault') {
-            steps {
-                node ('linux') {
-                        script {
-                            def secrets = [
-                                [$class: 'VaultSecret', path: '/v1/secret/pablo/level', secretValues: [
-                                    [$class: 'VaultSecretValue', envVar: 'testing', vaultKey: 'mykey']]]
-                            ]
-
-                            def configuration = [$class: 'VaultConfiguration',
-                                vaultUrl: 'http://127.0.0.1:8200',
-                                vaultCredentialId: 'vault']
-                            
-                            wrap([$class: 'VaultBuildWrapper', configuration: configuration, vaultSecrets: secrets]) {
-                                sh 'echo $testing'
-                            }
-                        }
-                    }
-            }
-        }*/
     }
-    
 }
