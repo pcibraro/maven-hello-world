@@ -5,6 +5,19 @@ pipeline {
         jdk 'JDK 1.8'
     }
     stages { 
+        stage('Call API') {
+            steps {
+                script {
+                    def response = httpRequest "https://twitter.com/1.1/search/tweets.json?q=from%3ANasa%20OR%20%23nasa"
+
+                    def responseContent readJSON text: response.content
+
+                    println responseContent
+
+
+                }
+            }
+        }
         /*stage('Build') { 
             steps { 
                echo 'This is a minimal pipeline.' 
@@ -29,7 +42,7 @@ pipeline {
 
             }
         }*/
-        stage('Vault') {
+        /*stage('Vault') {
             steps {
                 node ('linux') {
                         script {
@@ -48,7 +61,7 @@ pipeline {
                         }
                     }
             }
-        }
+        }*/
     }
     
 }
